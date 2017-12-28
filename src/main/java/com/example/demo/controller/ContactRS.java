@@ -21,14 +21,14 @@ public class ContactRS {
 	private ContactService contactService;
 	
 	@GetMapping("/findAllContacts")
-	public List<Contact> getAllContacts() throws ContactException {
+	public ResponseEntity<List<Contact>> getAllContacts() throws ContactException {
 		
 		List<Contact> contacts = contactService.findAllContacts();
 		if (contacts == null || contacts.size() > 1) {
 			throw new ContactException("Don't want size of Contacts to be greater than 1 or be null");
 		}
 		
-		return contacts;
+		return new ResponseEntity<List<Contact>>(contacts, HttpStatus.OK);
 	}
 	
 	//Spring provides us with @ExceptionHandler annotation to specifically handle a particular 
