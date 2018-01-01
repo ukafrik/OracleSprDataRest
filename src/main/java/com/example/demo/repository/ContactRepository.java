@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.Contact;
 
 @Repository
-public interface ContactRepository extends CrudRepository<Contact, Long> {
+public interface ContactRepository extends CrudRepository<Contact, String> {
 
 }

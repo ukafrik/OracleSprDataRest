@@ -22,4 +22,10 @@ public class ContactService {
 		
 		return contacts;
 	}
+	
+	public Contact findContactById(String contactId) {
+		
+		return contactRepo.findOne(contactId);
+		
+	}
 }

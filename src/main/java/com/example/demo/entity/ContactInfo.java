@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 
 /**
@@ -10,14 +11,15 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="CONTACTINFO")
-@NamedQuery(name="Contactinfo.findAll", query="SELECT c FROM Contactinfo c")
-public class Contactinfo implements Serializable {
+@NamedQuery(name="ContactInfo.findAll", query="SELECT c FROM ContactInfo c")
+public class ContactInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name="CONTACTINFO_ID_GENERATOR" )
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CONTACTINFO_ID_GENERATOR")
 	@Column(unique=true, nullable=false, precision=10)
+	@Min(1)
 	private long id;
 
 	@Column(length=255)
@@ -29,7 +31,7 @@ public class Contactinfo implements Serializable {
 	@Column(length=255)
 	private String phonenumber;
 
-	public Contactinfo() {
+	public ContactInfo() {
 	}
 
 	public long getId() {

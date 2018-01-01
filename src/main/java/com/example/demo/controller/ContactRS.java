@@ -2,19 +2,20 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Contact;
-import com.example.demo.entity.ErrorResponse;
 import com.example.demo.exception.ContactException;
 import com.example.demo.service.ContactService;
 
-@RestController(value="/oraclesprdatarest")
+@RestController(value="/oraclesprdatarest/contact")
 public class ContactRS {
 
 	@Autowired
@@ -31,6 +32,17 @@ public class ContactRS {
 		return new ResponseEntity<List<Contact>>(contacts, HttpStatus.OK);
 	}
 	
+	@GetMapping("/findContactById/{contactId}")
+	public ResponseEntity<Contact> findContactById(@Valid @PathVariable String contactId) throws ContactException {
+		
+		Contact contact = contactService.findContactById(contactId);
+		if (contact == null) {
+			throw new ContactException("Only 0 (null) or 1 contact can be found by this call!");
+		}
+		
+		return new ResponseEntity<Contact>(contact, HttpStatus.OK);
+	}
+	
 	//Spring provides us with @ExceptionHandler annotation to specifically handle a particular 
 	//or a common type of exceptions in the controller
 	//Note the @ExceptionHandler method in our controller, which should handle only 
@@ -40,12 +52,12 @@ public class ContactRS {
 	//such as IOException, NullPointerException and so on. To do that, Spring introduced @ControllerAdvice in version 3.2, 
 	//where can create a Controller Advice class in our application, which would be capable of handling 
 	//all the global exception scenarios
-	@ExceptionHandler(ContactException.class)
-	public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
-		ErrorResponse error = new ErrorResponse();
-		error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
-		error.setMessage(ex.getMessage());
-		
-		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
-	}
+//	@ExceptionHandler(ContactException.class)
+//	public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
+//		ErrorResponse error = new ErrorResponse();
+//		error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
+//		error.setMessage(ex.getMessage());
+//		
+//		return new ResponseEntity<ErrorResponse>(error, HttpStatus.OK);
+//	}
 }
